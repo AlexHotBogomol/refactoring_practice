@@ -22,7 +22,13 @@ class Mailer
     public function send() 
     {
         if (!empty($this->mail)) {
-            return sprintf('Mail was sent to %s from %s with subject %s and message %s', $this->mail['to'], $this->mail['from'], $this->mail['subject'], $this->mail['body']);
+            return sprintf(
+                'Mail was sent to %s from %s with subject %s and message %s', 
+                $this->mail['to'], 
+                $this->mail['from'], 
+                $this->mail['subject'], 
+                $this->mail['body']
+            );
         }else{
             throw new Exception('Mail was not composed');
         }
