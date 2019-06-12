@@ -1,15 +1,33 @@
 <?php
 
-class MailConfigurator
-{
-    private $settings;
-
-    private $configuration;
-
+abstract class Configurator{
     public function setConnection($settings)
     {
         $this->settings = $settings;
     }
+    abstract protected function configure();
+}
+
+interface HasSender
+{
+    public function getSender();
+}
+
+interface HasDriver
+{
+    public function getDriver();
+}
+
+interface HasStorage
+{
+    public function getStorage();
+}
+
+class MailConfigurator extends Configurator implements HasSender
+{
+    private $settings;
+
+    private $configuration;
 
     public function getSender()
     {
@@ -23,16 +41,11 @@ class MailConfigurator
     }
 }
 
-class DatabaseConfigurator
+class DatabaseConfigurator extends Configurator implements HasDriver
 {
     private $settings;
 
     private $configuration;
-
-    public function setConnection($settings)
-    {
-        $this->settings = $settings;
-    }
 
     public function getDriver()
     {
@@ -48,16 +61,11 @@ class DatabaseConfigurator
     }
 }
 
-class CacheConfigurator
+class CacheConfigurator extends Configurator implements HasStorage
 {
     private $settings;
 
     private $configuration;
-
-    public function setConnection($settings)
-    {
-        $this->settings = $settings;
-    }
 
     public function getStorage()
     {
