@@ -1,60 +1,65 @@
 <?php
 
-class Mailer {
-    var $mailer;
-    var $mail;
-    function setMailer ( google_mailer $mailer ) {
+class Mailer 
+{
+    private $mailer;
+    private $mail = [];
+    public function setMailer(GoogleMailer $mailer) 
+    {
         $this->mailer = $mailer;
     }
 
-function compose($to, $from, $body, $subject)
-{
-    $this->mail = [
-        'to' => $to,
-        'from' => $from,
-        'body' => $body,
-        'subject' => $subject
-    ];
-}
+    public function compose(string $to, string $from, string $body, string $subject)
+    {
+        $this->mail = [
+            'to' => $to,
+            'from' => $from,
+            'body' => $body,
+            'subject' => $subject,
+        ];
+    }
 
-    public function Send() {
+    public function send() 
+    {
         if (!empty($this->mail)) {
             return sprintf('Mail was sent to %s from %s with subject %s and message %s', $this->mail['to'], $this->mail['from'], $this->mail['subject'], $this->mail['body']);
-        } else {
+        }else{
             throw new Exception('Mail was not composed');
         }
     }
 }
 
-class google_mailer {
+class GoogleMailer
+{
     var $settings = [];
 
-    function google_mailer($settings = null) {
-        if ($settings) {
+    public function __construct(array $settings) 
+    {
+        if ($settings){
             $this->settings['host'] = $settings['host'];
             $this->settings['user'] = $settings['user'];
             $this->settings['password'] = $settings['password'];
         }
     }
-    public function Set_host($host)
+    public function setHost(string $host)
     {
         $this->settings['host'] = $host;
     }
 
-    function set_user(string $User) {
+    public function setUser(string $User) {
         $this->settings['user'] = $User;
     }
 
-    public function SetPassword($password)
+    public function setPassword(string $password)
     {
         $this->settings['password'] = $password;
     }
 }
 
-$googleMailer = new google_mailer(['host' => 'smtp.google.com', 'user' => 'test', 'password' => 'testpass']);
-$mailer = new Mailer();
-$mailer->setMailer($googleMailer);
+$google_mailer = new GoogleMailer(['host' => 'smtp.google.com', 'user' => 'test', 'password' => 'testpass']);
+$mailer = new Mailer;
+$mailer->setMailer($google_mailer);
 $mailer->compose('test@mail.com', 'student@mail.com', 'Welcome', 'Welcome message');
-echo $mailer->Send();
+echo $mailer->send();
 
 
