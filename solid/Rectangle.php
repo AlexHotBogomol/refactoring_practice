@@ -1,10 +1,12 @@
 <?php
-
 //Hint - Liskov Substitution Principle
 
-abstract class Figure
-{
-    abstract protected function area() : float; 
+abstract class Figure{
+    abstract protected function calculateArea() : float;
+}
+
+interface AreaTestable{
+    public function testArea(float $hypotheticalResult);
 }
 
 class Rectangle extends Figure
@@ -12,73 +14,73 @@ class Rectangle extends Figure
     private $width;
     private $height;
 
+    public function __construct(float $height, float $width){
+        $this->height = $height;
+        $this->width = $width;
+    }
     public function setHeight(float $height)
     {
         $this->height = $height;
     }
-
     public function getHeight()
     {
         return $this->height;
     }
-
     public function setWidth(float $width)
     {
         $this->width = $width;
     }
-
     public function getWidth()
     {
         return $this->width;
     }
-    public function area() : float
+    public function calculateArea() : float
     {
-        return $this->$height * $this->width;
+        return $this->height * $this->width;
     }
 }
-
 class Square extends Figure
 {
     private $side;
 
-    public function setSide(float $side)
-    {
+    public function __construct(float $side){
         $this->side = $side;
     }
 
-    public function area() : float
+    public function setSide(float $value)
     {
-        return $this->$side * $this->side;
+        $this->side = $value;
+    }
+
+    public function calculateArea() : float
+    {
+        return pow($this->side, 2);
     }
 }
-
-class FigureTest
+class FigureTest implements AreaTestable
 {
     private $figure;
-
     public function __construct(Figure $figure)
     {
         $this->figure = $figure;
     }
-
-    public function testArea()
+    public function testArea(float $hypotheticalResult)
     {
-        if($figure instanceof Rectangle ){
-            $this->figure->setHeight(2);
-            $this->figure->setWidth(3);
-        }else if($figure instanceof Square){
-            $this->figure->setSide(3);
+        $result = $this->figure->calculateArea();
+        if ($result !== $hypotheticalResult) {
+            return "Bad area \n";
+        } else {
+            return "Test passed! \n";
         }
-        return $this->figure->area();
     }
 }
 
-$rectangle = new Rectangle();
+$rectangle = new Rectangle(2, 4);
 echo "Calc area for rectangle \n";
-$rectangleTest = new FigureTest($rectangle);
-echo $rectangleTest->testArea();
+$figureTest = new FigureTest($rectangle);
+echo $figureTest->testArea(8);
 
-$square = new Square();
+$square = new Square(3);
 echo "Calc area for square \n";
-$rectangleTest = new FigureTest($square);
-echo $rectangleTest->testArea();
+$figureTest = new FigureTest($square);
+echo $figureTest->testArea(9);
