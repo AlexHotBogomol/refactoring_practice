@@ -2,12 +2,14 @@
 
 //Hint - Interface Segregation Principle
 
-interface Codeable{
+interface Codeable
+{
     public function canCode();
     public function code();
 }
 
-interface Testable{
+interface Testable
+{
     public function test();
 }
 

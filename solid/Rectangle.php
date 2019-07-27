@@ -1,7 +1,8 @@
 <?php
 //Hint - Liskov Substitution Principle
 
-abstract class Figure{
+abstract class Figure
+{
     abstract protected function calculateArea() : float;
 }
 

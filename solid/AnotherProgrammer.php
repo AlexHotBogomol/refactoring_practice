@@ -1,6 +1,7 @@
 <?php
 //Hint - Open Closed Principle
-abstract class Worker{
+abstract class Worker
+{
     abstract protected function doWork();
 }
 class AnotherProgrammer extends Worker

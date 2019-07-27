@@ -20,9 +20,15 @@ class Report
             'date' => $this->getDate(),
         ];
     }
+}
 
-    public function formatJson()
-    {
-        return json_encode($this->getContents());
+class Formatter
+{
+    public function formatJson($content){
+        return json_encode($content);
     }
 }
+
+$report = new Report;
+$formatter = new Formatter;
+echo $formatter->formatJson($report->getContents());
