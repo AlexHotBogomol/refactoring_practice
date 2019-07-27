@@ -1,16 +1,48 @@
 <?php
 
 //Hint - Dependency Inversion Principle
-class Mailer
+interface MailClientInterface
 {
+   public function send();
 }
 
-class SendWelcomeMessage
+class Mailer implements MailClientInterface
 {
-    private $mailer;
-    public function __construct(Mailer $mailer)
+  public function send(){
+    echo "Mailer message sent";
+  }
+}
+class Goolge implements MailClientInterface
+{
+  public function send(){
+    echo "Goolge message sent";
+  }
+}
+class Sendgrid implements MailClientInterface
+{
+  public function send(){
+    echo "Sendgrid message sent";
+  }
+}
+class Mailchimp implements MailClientInterface
+{
+  public function send(){
+    echo "Mailchimp message sent";
+  }
+}
+
+class Sender
+{
+    private $mailClient;
+    public function __construct(MailClientInterface $mailClient)
     {
-        $this->mailer = $mailer;
+      $this->mailClient = $mailClient;
+    }
+    public function sendMessage(){
+      $this->mailClient->send();
     }
 }
 
+
+$sender = new Sender(new Mailchimp);
+$sender->sendMessage();
